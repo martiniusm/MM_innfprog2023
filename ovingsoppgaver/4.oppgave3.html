@@ -6,6 +6,7 @@
     <title>Document</title>
 </head>
 <body>
+    <p id="utskrift"></p>
     <script>
         const barn1 = "jente"
         const barn2 = "gutt"
@@ -17,7 +18,9 @@
         if(barn1 === "jente") { anntall_jenter++ } else {anntall_gutter++} 
         //Samme test for barn 2, med ternary opperator
         barn2 === "jente" ? anntall_jenter++ :anntall_gutter++
+        barn3 === "jente" ? anntall_jenter++ :anntall_gutter++
 
+        document.getElementById("utskrift").innerHTML = 'Gutter: ${antall_gutter}.' 
     </script>
 </body>
 </html>
