@@ -10,6 +10,11 @@
     <section id="countdown"></section>
     <h2>Alle femmerne mellom 50 og 100</h2>
     <section id="fives"></section>
+
+    <h2>The sum og the hundred</h2>
+    <p id="hundred"></p>
+    <h2>Tall delelig på 7</h2>
+    <p id="seven"></p>
    
    <script>
     for(let teller = 10; teller >= 0; teller--) {
@@ -26,6 +31,28 @@
         document.getElementById("fives").innerHTML += `<p>${whileTeller}</p>`
         whileTeller++
     }
+
+    let sum = 0
+    const max = 670
+    for(let tall = 1; tall <= max ; tall++) {
+        sum += tall
+        console.log(sum)
+        if(tall < max) {
+            document.getElementById("hundred").innerHTML += tall + " + "    
+        } else {
+            document.getElementById("hundred").innerHTML += tall + " = " + sum
+        }
+        
+    }
+
+    //vi ønsker å skrive ut alle tall mellom 1 og 100 som er delelig på 7
+    for(let tall = 1; tall <= 100; tall ++) {
+        if(tall % 7 === 0) {
+            document.getElementById("seven").innerHTML += tall + ", "
+        }
+    }
+
+
     </script>
 </body>
 </html>
