@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oversette fra dyr til Animals</title>
+</head>
+<body>
+    <p id="setning"></p>
+    <script>
+    const dyr = ["Katt", "Gris", "Marihøne", "Skillpadde", "Bever", "Flue", "Leo", "Slange", "Bananflue", "Veps"]
+    const Animals = ["Cat", "Pig", "Ladybug", "Turtle", "Beaverr", "Fly", "Beast", "Snake", "Bananafly", "Hornet"]
+    const tekst = ` ${dyr [0]} er et dyr. Det heter ${Animals [0]} på engelsk. ${dyr [6]} er også et dyr, som heter ${Animals [6]} på engelsk.`
+    document.getElementById("setning").innerHTML = tekst
+    </script>
+</body>
+</html>

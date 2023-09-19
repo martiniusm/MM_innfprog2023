@@ -6,7 +6,7 @@
     <title>array with objects</title>
     <style>
         body{background: #f3f3f3;}
-        section { with: 90%; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-between}
+        section { width: 90%; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-between}
         article { width: 31%; background: #ffffff; border: 1px solid #ccc; }
         article img { width: 100%;height: auto; }
         h2, p { margin-left: 20px; }
@@ -16,6 +16,10 @@
     <h1>Photo Gallery</h1>
     <section id="gallery">
         
+    </section>
+    <h2>Natur</h2>
+    <section id="categoryImages">
+
     </section>
     <script>
         //All pictures fetched with permission from unsplash.com
@@ -59,6 +63,18 @@ photogallery.map(photo => document.getElementById("gallery").innerHTML += `<arti
             <h2>${photo.title}</h2>
             <p>Photographer: ${photo.photographer}</p>
         </article>`)
+
+        const categoryImages = photogallery.filter(image => image.category === "Nature")
+
+        categoryImages.map(catimage => document.getElementById("categoryImages").innerHTML += `
+        <article>
+            <image src="${catimage.imageURL}" alt="${catimage.title}" />
+            <h2>${catimage.title}</h2>
+            <p>Photographer: ${catimage.photographer}</p>
+        </article>
+        `
+        )
+        console.log(categoryImages)
     </script>
 </body>
 </html>
