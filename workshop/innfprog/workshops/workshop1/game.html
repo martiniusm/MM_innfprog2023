@@ -17,7 +17,7 @@
     <header>
         <section id="player">
             <ul>
-                <li><img src="icons/shield.svg"> <span id="playerName">Marius</span></li>
+                <li><img src="icons/shield.svg"> <span id="playerName">Mart</span></li>
                 <li><img src="icons/energydrink.svg" title="energy"> <span id="energy">3</span></li>
                 <li><img src="icons/notebook.svg"> <span id="notebookItems">0</span></li>
                 <li><img src="icons/solution.svg"> <span id="points">0</span> poeng</li>
@@ -40,22 +40,22 @@
                     <tr>
                         <td><img src="icons/variable.svg" alt="" /></td>
                         <td>Variabler</td>
-                        <td>0</td>
+                        <td><span id="variables">0</span></td>
                     </tr>
                     <tr>
                         <td><img src="icons/array.svg" alt="" /></td>
                         <td>Arrayer</td>
-                        <td>1</span></td>
+                        <td><span id="arrays">1</span></td>
                     </tr>
                     <tr>
                         <td><img src="icons/loop.svg" alt="" /></td>
                         <td>Løkker</td>
-                        <td>2</td>
+                        <td><span id="loops">2</span></td>
                     </tr>
                     <tr>
                         <td><img src="icons/function.svg" alt="" /></td>
                         <td>Funksjoner</td>
-                        <td>1</td>
+                        <td><span id="functions">1</span></td>
                     </tr>
                 </table>
             </div>
@@ -74,12 +74,41 @@
         </section>
     </main>
     <script>
-        const gameConfig ={
-        player,
-        energy,
-        points,
-        duration,
+        const gameConfig = {
+        player: "",
+        energy: 5,
+        points: 3,
+        duration: 69,
         }
+        
+        const notebook = {
+            variables: 3, 
+            arrays: 2,
+            loops: 4,
+            functions: 19,
+        }
+           
+        function updateStaticUI() {
+            document.getElementById("playerName").innerHTML = gameConfig.player
+            document.getElementById("energy").innerHTML = gameConfig.energy
+            document.getElementById("points").innerHTML = gameConfig.points
+            document.getElementById("duration").innerHTML = gameConfig.duration
+            
+            document.getElementById("variables").innerHTML = notebook.variables
+            document.getElementById("arrays").innerHTML = notebook.arrays
+            document.getElementById("loops").innerHTML = notebook.loops
+            document.getElementById("functions").innerHTML = notebook.functions
+
+            if(gameConfig.player === "") {
+                document.getElementById("playerName").innerHTML = "Waiting for player"
+            } else {
+            document.getElementById("playerName").innerHTML = gameConfig.player}
+        }
+
+        //kjøre funksjonen for utskrift
+        updateStaticUI()
+        
+
         //PREPARE GAME CONFIG AND VARIABLES
         //TODO: config
        
