@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas cheat sheet</title>
+    <style>
+        body {
+            width: 100vw;
+            height: 100vh;
+            background-color: #c1a8b3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        canvas {
+            background-color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="drawingArea"></canvas>
+    <!--Startkode canvas-->
+    <script>
+        //Hente cnavas-elementet
+        const canvas = document.getElementById("drawingArea")
+        //Sette høyde og bredde på canvas
+        canvas.width = 800
+        canvas.height = 600
+        //Sette context på canvas
+        const ctx = canvas.getContext("2d")
+
+        //Tegne en strek
+        ctx.beginPath()
+        ctx.moveTo(100, 100)
+        ctx.lineTo(300, 300)
+        //Sette farge på stroke FØR stroke
+        ctx.strokeStyle = "purple"
+        ctx.lineWidth = 2
+        ctx.stroke()
+        ctx.closePath()
+
+        //Tegne firkanter
+        ctx.fillRect(500, 400, 300, 200)
+        ctx.strokeStyle = "pink"
+        ctx.strokeRect(498.5, 5, 300, 200)
+
+        //Tegne sirkel
+        ctx.beginPath()
+        ctx.arc(150, 450, 75, 0, 2 * Math.PI)
+        ctx.fillStyle = "gold"
+        ctx.fill()
+        ctx.closePath()
+
+        //Text
+        ctx.beginPath()
+        ctx.fillStyle = "black"
+        ctx.font = "60px georgia"
+        ctx.fillText("ayo", 107, 460, )
+        ctx.closePath()
+        </script>
+</body>
+</html>
