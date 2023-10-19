@@ -264,10 +264,22 @@
              skal komme opp i blokken under blokkene som forteller hvem som valgte hva.
              */
 
+            //Oppgave 3
+            if (winner === "player") {
+                document.getElementById("winner").style.backgroundColor = "#FFD700"
+            } else {
+                document.getElementById("winner").style.backgroundColor = "#006b5e"
+            }
+
             //Now, lastly, let's update the counter on how many games we have played:
             counter = counter + 1
-
+            
+            //Oppgave 4
+            if(counter){
+                document.getElementById("counter").style.color ="#00bcd4"
+            }
             document.getElementById("counter").innerHTML = counter
+        
             /* OPPGAVE 2.3: FORKLAR HVA SOM SKJER PÅ LINJE 262
              * 
              I linje 262 som nå er linje 266 skriver man counter = counter + 1. Dette skriver man for å legge til 1 
