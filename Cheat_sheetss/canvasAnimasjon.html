@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas cheat sheet</title>
+    <style>
+        body {
+            width: 100vw;
+            height: 100vh;
+            background-color: #c1a8b3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        canvas {
+            background-color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="drawingArea"></canvas>
+    <!--Startkode canvas-->
+    <script>
+        //Hente cnavas-elementet
+        const canvas = document.getElementById("drawingArea")
+        //Sette høyde og bredde på canvas
+        canvas.width = 800
+        canvas.height = 600
+        //Sette context på canvas
+        const ctx = canvas.getContext("2d")
+
+        //innlastingskontroll
+        let heroImageLoaded = false
+        //Lager et bildeobjekt
+        const heroImage = new Image()
+        //Angi hvilken bildefil som skal tegnes i canvas
+        heroImage.src = "fly.png"
+        //sjekker vi at bildet er lastet i nettleser
+        heroImage.onload = () => {
+            heroImageLoaded = true
+            //ctx.drawImage(heroImage, 100, 100)
+        }
+        //gi oss selv en feilmelding dersom objektet ikke klarer å laste
+        heroImageLoaded ? console.log("bildeobjekt lastet") : console.log("bildeobjekt er ikke lastet")
+
+        //definerer requestAnimationFrame for ulike nettlesere
+        requestAnimationFrame = window.requestAnimationFrame || 
+        window.webkitURLRequestAnimationFrame || 
+        window.msRequestAnimationFrame || 
+        window.mozRequestAnimationFrame
+
+        //lage en funksjon for tilfeldig valgte verdier
+        function randomMinMax(min, max) {
+            return Math.floor(Math.random() * (max - min + 1) + min) 
+        }
+
+        //La oss lage en X-counter og Y-counter
+        let xCounter = randomMinMax(0, canvas.width - 200)
+        let yCounter = randomMinMax(canvas.height / 2, canvas.height)
+
+        function renderFrames() {
+
+            //tømme hele canvaset
+            ctx.clearRect(0, 0, canvas.width, canvas.height)
+            //tegne elemnetene i en bilderamme
+            ctx.drawImage(heroImage, xCounter, yCounter)
+            //flytte bilet en px mot høyre
+            xCounter++
+            //flytte bildet 5px oppover
+            yCounter = yCounter - 3
+            //kjøre en ny bilderamme
+            requestAnimationFrame(renderFrames)
+        }
+        //starter animasjon
+        renderFrames()
+        
+        </script>
+</body>
+</html>
