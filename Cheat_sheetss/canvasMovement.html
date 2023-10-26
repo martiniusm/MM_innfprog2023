@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend+Zetta:wght@200&display=swap" rel="stylesheet">
+    <title>Canvas cheat sheet</title>
+    <style>
+        body {
+            width: 100vw;
+            height: 100vh;
+            background-color: #c1a8b3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        canvas {
+            background-color: #88a989;
+        }
+        p {
+            position: absolute;
+            top: 20px;
+            font-size: 20px;
+            font-family: 'Lexend Zetta', sans-serif;
+            color: aliceblue;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="drawingArea"></canvas>
+    <p>POINTS: <span id="count">0 </span></p>
+    <!--Startkode canvas-->
+    <script>
+        //Hente cnavas-elementet
+        const canvas = document.getElementById("drawingArea")
+        //Sette høyde og bredde på canvas
+        canvas.width = 800
+        canvas.height = 600
+        //Sette context på canvas
+        const ctx = canvas.getContext("2d")
+
+        //lager en teller
+        let counter = 0
+
+        //innlastingskontroll
+        let heroImageLoaded = false
+        //Lager et bildeobjekt
+        const heroImage = new Image()
+        //Angi hvilken bildefil som skal tegnes i canvas
+        heroImage.src = "square.png"
+        //sjekker vi at bildet er lastet i nettleser
+        heroImage.onload = () => {
+            heroImageLoaded = true
+            //ctx.drawImage(heroImage, 100, 100)
+        }
+      
+        const hero = {
+            x: canvas.width / 2,
+            y: canvas.height / 2,
+            speed: 5,
+            normalSpeed: 5,
+            boostSpeed: 10,
+            width: 50,
+            height: 50,
+        }
+
+        //lage en funksjon for tilfeldig valgte verdier
+        function randomMinMax(min, max) {
+            return Math.floor(Math.random() * (max - min + 1) + min) 
+        }
+
+        const enemy = {
+            x: randomMinMax(50, canvas.width - 100),
+            y: randomMinMax(50, canvas.height - 100),
+            width: 50,
+            height: 50,
+        }
+
+        //definerer requestAnimationFrame for ulike nettlesere
+        requestAnimationFrame = window.requestAnimationFrame || 
+        window.webkitURLRequestAnimationFrame || 
+        window.msRequestAnimationFrame || 
+        window.mozRequestAnimationFrame
+
+        //Lage state variabler for retning
+        let left = false
+        let right = false
+        let up = false
+        let down = false
+
+        //sjekk etter tastetrykk
+        document.addEventListener("keydown", function(event) {
+            if(event.key === "a") {
+                left = true
+            }
+            if(event.key === "d") {
+                right = true
+            }
+            if(event.key === "w") {
+                up = true
+            }
+            if(event.key === "s") {
+                down = true
+            }
+            if(event.key === "b") {
+                hero.speed = hero.boostSpeed
+            }
+        })
+        document.addEventListener("keyup", function(event) {
+            event.key === "a" ? left = false : null
+            event.key === "d" ? right = false : null
+            event.key === "w" ? up = false : null
+            event.key === "s" ? down = false : null
+            event.key === "b" ? hero.speed = hero.normalSpeed : null
+        })
+
+        function renderFrames() {
+            
+            //tømme hele canvaset
+            ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+            //Tegne fiende rektangel
+            ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height)
+            
+            //Teste kollisjon mot høyre side
+            if(hero.x + hero.width >= canvas.width) {
+                right = false
+            }
+            //Teste kollisjon mot venstre siden
+            if(hero.x <= 0) {
+                left = false
+            }
+            
+            //SJekke om helten er utenfor toppen
+            if(hero.y + hero.height <= 0 && up) {
+                hero.y = canvas.height
+            }
+
+            //Teste om helten er utenfor bunnen
+            if(hero.y >= canvas.height && down) {
+                hero.y = -hero.height
+            }
+            //Deaktivere boost når vi ankommer canvas veggene
+            if(
+                hero.x + hero.width > canvas.width - hero.boostSpeed ||
+                hero.x < hero.boostSpeed
+            ) {
+                hero.speed = hero.normalSpeed
+            }
+            
+            //tegne elemnetene i en bilderamme
+            ctx.drawImage(heroImage, hero.x, hero.y, hero.width, hero.height)
+            
+            //Sjekk etter retningsforandring
+            if(left === true) {
+               hero.x = hero.x - hero.speed
+            }
+            if(right === true) {
+                hero.x = hero.x + hero.speed
+            }
+            if(up === true) {
+                hero.y = hero.y - hero.speed
+            }
+            if(down === true) {
+                hero.y = hero.y + hero.speed
+            }
+
+            //sjekk for kollisjon melom hero og firkant
+            if(
+                hero.x + hero.width > enemy.x  && 
+                hero.x < enemy.x + enemy.width &&
+                hero.y + hero.height > enemy.y &&
+                hero.y < enemy.y + enemy.height
+            ) {
+                console.log("kollisjon!!")
+                //FLytte enemy: nye x- og y- verdier
+                counter++
+                document.getElementById("count").innerHTML = counter
+                enemy.x = randomMinMax(50, canvas.width -100)
+                enemy.y = randomMinMax(50, canvas.height -100)
+            }
+            
+            //kjøre en ny bilderamme
+            requestAnimationFrame(renderFrames)
+        }
+        //starter animasjon
+        renderFrames()
+        
+        </script>
+</body>
+</html>
