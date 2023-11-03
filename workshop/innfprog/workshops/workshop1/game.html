@@ -31,8 +31,10 @@
         </nav>
     </header>
     <main>
+
+        <canvas id="gamearea"></canvas>
         
-        <section id="notebook" class="hideable">
+        <section id="notebook" class="hiiden hideable">
             <div id="notebook-page">
                 
                 <h2>Notater</h2>
@@ -73,7 +75,14 @@
             </div>
         </section>
     </main>
+
+    
     <script>
+        //Preparere canvas
+        const canvas = document.getElementById("gamearea")
+        canvas.width = 800
+        canvas.height = 600
+        const ctx = canvas.getContext("2d")
 
         //PREPARE GAME CONFIG AND VARIABLES
         //TODO: config
@@ -82,6 +91,7 @@
         energy: 10,
         points: 3,
         duration: 69,
+        gameState: "active" // mulige states : active, paused, completed
         }
 
         //TODO: notebook
@@ -190,6 +200,16 @@
             if(event.key === "i") {
                 toggleVisibility("info")
             }
+            //WS3, oppgave 4: Pause med P
+            if(event.key === "p") {
+                if(gameConfig.gameState === "active") {
+                    gameConfig.gameState = "paused"
+                }
+                else if(gameConfig.gameState === "paused") {
+                    gameConfig.gameState = "active"
+                }
+                console.log(gameConfig)
+            }
         })
 
         //Lytte etter klikk på notebook- og info-knappene
@@ -199,6 +219,81 @@
         document.getElementById("infoToggler").addEventListener("click", function(event) {
             toggleVisibility("info")
         })
+
+        //WS3, opp2: Tegne pause-melding
+        function pauseText(text) {
+            ctx.fillStyle = "white"
+            ctx.fillRect(canvas.width -200, canvas.height -30, 200, 30)
+            ctx.fillStyle = "#3c429b"
+            ctx.font = "16px Arial"
+            ctx.fillText(text, canvas.width -195, canvas.height -10)
+        }
+        
+        //WS3, opp3: Opptegning av fortran
+        const fortran = {
+            speed: 3,
+            x: canvas.width / 2 - 40 / 2,
+            y: canvas.height / 2 - 40 -40,
+        }
+
+        const fortranImage = new Image()
+        fortranImage.src = "icons/fortran.png"
+        let fortranLoaded = false
+        fortranImage.onload = () => {
+            fortranLoaded = true
+        }
+
+        //WS3, oppgave 5, Liste med elementtyper
+        const itemTypes = ["variable", "array", "loop", "function", "bug", "energydrink"]
+        const randomItem = itemTypes[Math.floor(Math.random() * itemTypes.length)]
+        console.log(randomItem)
+
+        function drawItem(type, x, y) {
+            const itemImage = new Image()
+            itemImage.src = "icons/" + type + ".svg"
+            ctx.drawImage(itemImage, x, y)
+            //Lage en sekundtellersirkel
+            ctx.beginPath()
+            ctx.arc(x+5, y+5, 10, 0, 2 * Math.PI)
+            ctx.fillStyle = "red"
+            ctx.fill()
+            ctx.font = "10px Verdana"
+            ctx.fillStyle = "white"
+            ctx.fillText("9", x+2, y+8)
+            ctx.closePath()
+        }
+
+
+        //definerer requestAnimationFrame for ulike nettlesere
+        requestAnimationFrame = window.requestAnimationFrame || 
+        window.webkitURLRequestAnimationFrame || 
+        window.msRequestAnimationFrame || 
+        window.mozRequestAnimationFrame
+
+        function renderFrames() {
+            //Tømme frame
+            ctx.clearRect(0, 0, canvas.width, canvas.height)
+            //Tegne opp fortran
+            fortranLoaded ? ctx.drawImage(fortranImage, fortran.x, fortran.y, 40, 80) : null
+            //Tegn opp item
+            drawItem(randomItem, 100, 100)
+            //Test hvor vi sjekker om spillet er pauset:
+            if(gameConfig.gameState === "paused") {
+                console.log("Spillet er pauset")
+                pauseText("Press P to unpause")
+                //skirve ut PAUSED til canvas
+                ctx.font = "60px Arial"
+                ctx.fillStyle = "red"
+                ctx.fillText("PAUSED", 280, 300)
+            } else{
+                console.log("Spillet er aktivt")
+                pauseText("Press P to pause")
+            }
+
+            //KJør renderFRames på ny via requestAnimationFrame
+            requestAnimationFrame(renderFrames)
+        }
+        renderFrames()
     </script>
 </body>
 </html>
